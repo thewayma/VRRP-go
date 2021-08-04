@@ -76,10 +76,12 @@ func NewVirtualRouter(VRID byte, nif string, Owner bool, IPvX byte) *VirtualRout
 		//set up IPv4 interface
 		vr.iplayerInterface = NewIPv4Conn(vr.preferredSourceIP, VRRPMultiAddrIPv4)
 	} else {
+        /*
 		//set up ND client
 		vr.ipAddrAnnouncer = NewIPIPv6AddrAnnouncer(NetworkInterface)
 		//set up IPv6 interface
 		vr.iplayerInterface = NewIPv6Con(vr.preferredSourceIP, VRRPMultiAddrIPv6)
+        */
 	}
 	logger.GLoger.Printf(logger.INFO, "virtual router %v initialized, working on %v", VRID, nif)
 	return vr

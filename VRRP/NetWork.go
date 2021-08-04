@@ -4,7 +4,7 @@ import (
 	"VRRP/logger"
 	"fmt"
 	"github.com/mdlayher/arp"
-	"github.com/mdlayher/ndp"
+    //"github.com/mdlayher/ndp"
 	"net"
 
 	"syscall"
@@ -24,6 +24,7 @@ type IPv4AddrAnnouncer struct {
 	ARPClient *arp.Client
 }
 
+/*
 type IPv6AddrAnnouncer struct {
 	con *ndp.Conn
 }
@@ -67,6 +68,7 @@ func (nd *IPv6AddrAnnouncer) AnnounceAll(vr *VirtualRouter) error {
 
 	return nil
 }
+*/
 
 //makeGratuitousPacket make gratuitous ARP packet with out payload
 func (ar *IPv4AddrAnnouncer) makeGratuitousPacket() *arp.Packet {
@@ -162,6 +164,7 @@ func ipConnection(local, remote net.IP) (*net.IPConn, error) {
 			return nil, fmt.Errorf("ipConnection: %v", errOfSetLoop)
 		}
 	} else {
+        /*
 		//IPv6 mode
 		//set hop limit
 		if errOfSetHOPLimit := syscall.SetsockoptInt(int(fd.Fd()), syscall.IPPROTO_IPV6, syscall.IPV6_MULTICAST_HOPS, 255); errOfSetHOPLimit != nil {
@@ -178,7 +181,7 @@ func ipConnection(local, remote net.IP) (*net.IPConn, error) {
 		if err := syscall.SetsockoptInt(int(fd.Fd()), syscall.IPPROTO_IPV6, syscall.IPV6_2292PKTINFO, 1); err != nil {
 			return nil, fmt.Errorf("ipConnection: %v", err)
 		}
-
+        */
 	}
 	logger.GLoger.Printf(logger.INFO, "IP virtual connection established %v ==> %v", local, remote)
 	return conn, nil
