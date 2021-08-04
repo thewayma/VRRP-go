@@ -34,7 +34,7 @@ type VirtualRouter struct {
 }
 
 //NewVirtualRouter create a new virtual router with designated parameters
-func NewVirtualRouter(VRID byte, nif string, Owner bool, IPvX byte) *VirtualRouter {
+func NewVirtualRouter(VRID byte, nif, sif string, Owner bool, IPvX byte) *VirtualRouter {
 	if IPvX != IPv4 && IPvX != IPv6 {
 		logger.GLoger.Printf(logger.FATAL, "NewVirtualRouter: parameter IPvx must be IPv4 or IPv6")
 	}
@@ -64,8 +64,14 @@ func NewVirtualRouter(VRID byte, nif string, Owner bool, IPvX byte) *VirtualRout
 		logger.GLoger.Printf(logger.FATAL, "NewVirtualRouter: %v", errOfGetIF)
 	}
 	vr.netInterface = NetworkInterface
+
+	var NetworkSInterface, errOfGetSIF = net.InterfaceByName(sif)
+	if errOfGetSIF != nil {
+		logger.GLoger.Printf(logger.FATAL, "NewVirtualRouter: %v", errOfGetIF)
+	}
+
 	//find preferred local IP address
-	if preferred, errOfGetPreferred := findIPbyInterface(NetworkInterface, IPvX); errOfGetPreferred != nil {
+	if preferred, errOfGetPreferred := findIPbyInterface(NetworkSInterface, IPvX); errOfGetPreferred != nil {
 		logger.GLoger.Printf(logger.FATAL, "NewVirtualRouter: %v", errOfGetPreferred)
 	} else {
 		vr.preferredSourceIP = preferred

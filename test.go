@@ -4,6 +4,7 @@ import (
 	"VRRP/VRRP"
 	"flag"
 	"fmt"
+	"net"
 	"time"
 )
 
@@ -19,7 +20,11 @@ func init() {
 
 func main() {
 	flag.Parse()
-	var vr = VRRP.NewVirtualRouter(byte(VRID), "ens33", false, VRRP.IPv4)
+	var vr = VRRP.NewVirtualRouter(byte(VRID), "ens34", "ens35", false, VRRP.IPv4)
+
+	vip := net.IPv4(10, 0, 0, 27)
+	vr.AddIPvXAddr(vip)
+
 	vr.SetPriorityAndMasterAdvInterval(byte(Priority), time.Millisecond*800)
 	vr.Enroll(VRRP.Backup2Master, func() {
 		fmt.Println("init to master")
